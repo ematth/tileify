@@ -6,5 +6,5 @@
 ## Directions
 - Clone this repo with `git clone https://github.com/ematth/tileify.git`
 - run script with `python3 tileify.py path/to/image`
-- Output appears in `output/` directory, labeled by `name_row_column`
+- Output appears in `name_tiles/` directory, labeled by `name_row_column`
 - Upload directory to slack, enjoy your multi-tile emoji :)
