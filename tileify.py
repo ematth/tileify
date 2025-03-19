@@ -19,6 +19,11 @@ def tile_image(img: np.ndarray, name: str) -> None:
         cropped_data = img[(t:=c*80):t+80, (b:=r*80):b+80]
         cropped = Image.fromarray(np.uint8(cropped_data))
         cropped.save(f'{name}_tiles/{name}_{c}_{r}.png')
+
+    for r in range(img.shape[1]//80):
+        for c in range(img.shape[0]//80):
+            print(f':{name}_{r}_{c}:', end='')
+    print()
     return
 
 
@@ -40,7 +45,7 @@ def load_image(filename: str) -> np.ndarray:
 
     w, h = img.size
     img = img.resize((w - w % 80, h - h % 80))
-    return np.array(img).astype(np.uint8)
+    return np.array(img).astype(np.uint8)    
 
 
 if __name__ == '__main__':
