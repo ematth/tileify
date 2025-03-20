@@ -1,4 +1,4 @@
-from PIL import Image
+from PIL import Image, ImageSequence
 import numpy as np
 from itertools import product
 import sys
@@ -48,6 +48,34 @@ def load_image(filename: str) -> np.ndarray:
     return np.array(img).astype(np.uint8)    
 
 
+def tile_gif(frames: list[Image], name: str, dur: float) -> None:
+    assert frames[0].shape[0] % 80 == 0 and frames[0].shape[1] % 80 == 0, 'GIF dimensions must be divisible by 80'
+    os.makedirs(f'./{name}_tiles', exist_ok=True)
+
+    for r,c in product(range(frames[0].shape[1]//80), range(frames[0].shape[0]//80)):
+        cropped_gif = []
+        for f in frames:
+            cropped_data = f[(t:=c*80):t+80, (b:=r*80):b+80]
+            cropped_gif.append(Image.fromarray(np.uint8(cropped_data)).convert('RGBA'))
+        cropped_gif[0].save(f'{name}_tiles/{name}_{c}_{r}.gif', save_all=True, append_images=cropped_gif[1:], loop=0, duration=dur)
+
+    for r in range(frames[0].shape[1]//80):
+        for c in range(frames[1].shape[0]//80):
+            print(f':{name}_{r}_{c}:', end='')
+    print()
+    return
+
+
+def load_gif(filename: str) -> tuple[list[Image], float]:
+    gif = Image.open(filename)
+    frames = [frame.copy().convert('RGBA') for frame in ImageSequence.Iterator(gif)]
+
+    w, h = gif.size
+    for i, frame in enumerate(frames):
+        frames[i] = frame.resize((w - w % 80, h - h % 80))
+    return [np.array(f).astype(np.uint8) for f in frames], gif.info['duration']
+
+
 if __name__ == '__main__':
     """
     Usage: python tileify.py path/to/file.extension
@@ -55,5 +83,9 @@ if __name__ == '__main__':
     Example: python tileify.py example.png
     """
     filename = sys.argv[1]
-    img = load_image(filename)
-    tile_image(img, filename.split('.')[0])
+    if filename.split('.')[-1] == 'gif':
+        gif, dur = load_gif(filename)
+        tile_gif(gif, filename.split('.')[0], dur)
+    else: 
+        img = load_image(filename)
+        tile_image(img, filename.split('.')[0])
