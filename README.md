@@ -1,4 +1,7 @@
-# TILEIFY ![](./widecat_tiles/widecat_0_0.gif)![](./widecat_tiles/widecat_0_1.gif)![](./widecat_tiles/widecat_0_2.gif)
+# TILEIFY 
+
+<img src="widecat.gif" alt="original GIF" id="gif0"> >>> <img src="widecat_tiles/widecat_0_0.gif" alt="First GIF" id="gif1"> <img src="widecat_tiles/widecat_0_1.gif" alt="Second GIF" id="gif2"> <img src="widecat_tiles/widecat_0_2.gif" alt="Third GIF" id="gif3">
+
 > Tool to convert images into a collage of emojis.
 > Credit Rutvik Choudhary (@rchoudhary, rutvikc2@illinois.edu) for the initial script.
 > Optimized and improved by Evan Matthews (@ematth, evanmm3@illinois.edu)
